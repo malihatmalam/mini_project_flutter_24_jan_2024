@@ -9,6 +9,7 @@ import '../../domain/entities/chat_room.dart';
 import '../../domain/usecases/get_chat.dart';
 import '../../domain/usecases/send_chat.dart';
 
+@immutable
 class ChatPage extends StatefulWidget{
   late String? roomId;
   ChatPage(this.roomId);
