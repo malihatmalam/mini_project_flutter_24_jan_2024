@@ -1,15 +1,15 @@
-class Room{
+class Rooms{
   String? from;
   String? to;
 
-  Room({ required this.from, required this.to});
+  Rooms({ required this.from, required this.to});
 
-  factory Room.fromJson(Map<String, dynamic> json){
+  factory Rooms.fromJson(Map<String, dynamic> json){
     return switch(json){
       {
       'from': String from,
       'to': String to
-      } => Room(from: from, to: to),
+      } => Rooms(from: from, to: to),
       _ => throw const FormatException('Gagal membuat room')
     };
   }

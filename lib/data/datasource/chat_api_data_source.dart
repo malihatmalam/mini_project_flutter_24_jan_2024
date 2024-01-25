@@ -22,6 +22,7 @@ class ChatApiDataSource{
   }
 
   Future<String> postRoomData(Map<String, dynamic> room) async {
+    print(room);
     var response = await http.post(
         Uri.parse('${URL}/api/room'),
         headers: <String, String>{
@@ -36,6 +37,7 @@ class ChatApiDataSource{
   }
 
   Future<String> postChatData(Map<String, dynamic> chat) async {
+    print(chat);
     var response = await http.post(
         Uri.parse('${URL}/api/chat'),
         headers: <String, String>{
@@ -43,7 +45,7 @@ class ChatApiDataSource{
         },
         body: jsonEncode(<String, dynamic>{
           'id' : chat['id'],
-          'username' : chat['username'],
+          'from' : chat['username'],
           'text' : chat['text']
         })
     );
