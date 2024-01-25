@@ -177,7 +177,7 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                                         fontSize: 20,
                                                       ),
                                                     ),
-                                                    subtitle: _messages!.length > 0 ? Text('${_messages.last.text}') : Text(''),
+                                                    subtitle: _messages!.length > 0 ? Text('${_messages.last.text}', maxLines: 1, overflow: TextOverflow.ellipsis,) : Text(''),
                                                     trailing: _messages.length > 0 ? Text('${datetime}') : Text(''),
                                                     onTap: () {
                                                       box.put('usernameDestination', _users[1]);
