@@ -6,7 +6,6 @@ import 'package:mini_project_flutter_24_jan_2024/domain/usecases/get_messages.da
 
 import '../../domain/entities/chat_message.dart';
 import '../../domain/entities/user_room.dart';
-import '../../domain/usecases/get_chat.dart';
 import '../../domain/usecases/get_rooms.dart';
 
 enum MenuItem{ logout }
@@ -169,7 +168,7 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                                   margin: EdgeInsets.all(5),
                                                   child: ListTile(
                                                     leading: CircleAvatar(
-                                                      child: Text('${_users?[1][0]}'),
+                                                      child: Text('${_users[1][0]}'),
                                                     ),
                                                     title: Text(
                                                       '${_users[1]}',
@@ -178,8 +177,8 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                                         fontSize: 20,
                                                       ),
                                                     ),
-                                                    subtitle: _messages!.length > 0 ? Text('${_messages?.last.text}') : Text(''),
-                                                    trailing: _messages!.length > 0 ? Text('${datetime}') : Text(''),
+                                                    subtitle: _messages!.length > 0 ? Text('${_messages.last.text}') : Text(''),
+                                                    trailing: _messages.length > 0 ? Text('${datetime}') : Text(''),
                                                     onTap: () {
                                                       box.put('usernameDestination', _users[1]);
                                                       context.go('/chat/${listRooms[index]}');

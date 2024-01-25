@@ -1,6 +1,5 @@
 
 import 'package:mini_project_flutter_24_jan_2024/domain/entities/chat_message.dart';
-import 'package:mini_project_flutter_24_jan_2024/domain/entities/chat_room.dart';
 import 'package:mini_project_flutter_24_jan_2024/domain/entities/message.dart';
 
 import '../../data/repository/chat_repository.dart';
