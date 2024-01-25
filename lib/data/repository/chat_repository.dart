@@ -7,6 +7,7 @@ import 'package:mini_project_flutter_24_jan_2024/domain/entities/chat_message.da
 import 'package:mini_project_flutter_24_jan_2024/domain/entities/chat_room.dart';
 import 'package:mini_project_flutter_24_jan_2024/domain/entities/message.dart';
 import 'package:mini_project_flutter_24_jan_2024/domain/entities/user_room.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 
 import '../../domain/entities/chat.dart';
 
@@ -16,6 +17,9 @@ class ChatRepository{
   Future<UserRoom> getRoom(String username) async {
     var jsonArray = jsonDecode(await chatApiDataSource.getUserData(username))['data']['rooms'];
     List listRoom = jsonArray;
+    print(listRoom);
+    listRoom.sort((a, b) => b.compareTo(a));
+    print(listRoom);
     return UserRoom(username: username, room: listRoom);
   }
 
@@ -33,11 +37,6 @@ class ChatRepository{
   }
 
   Future<bool> postSendMessage(Chat chat) async {
-    print(chat.id);
-    print(chat.username);
-    print(chat.text);
-    print('------------');
-    print(chat.toJson());
     var response = await chatApiDataSource.postChatData(chat.toJson());
     return jsonDecode(response)['data'];
   }

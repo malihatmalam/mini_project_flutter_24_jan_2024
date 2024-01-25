@@ -89,6 +89,7 @@ class _AddRoomPageState extends State<AddRoomPage> {
                               );
                               print(_room);
                               String _newRoom = await CreateRoom().execute(_room);
+                              box.put('usernameDestination', _destinationController.text);
                               context.go('/chat/${_newRoom}');
                               ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Berhasil membuat percakapan baru')

@@ -41,7 +41,7 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
       length: 3,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Homepage'),
+          title: Text('MiChat'),
           actions: [
             Container(
               padding: EdgeInsets.all(5),
@@ -148,14 +148,18 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                     child: ListView(
                                       scrollDirection: Axis.vertical,
                                       children: List.generate(listRooms!.length, (index) {
-                                        return FutureBuilder<ChatMessage>(
+                                        return FutureBuilder<ChatMessage?>(
                                           future: GetMessage().execute(listRooms[index]),
                                           builder: (context, snapshot) {
                                             if(snapshot.hasData){
                                               var _users = snapshot.data!.users;
                                               var _messages = snapshot.data!.messages;
-                                              var date = DateTime.fromMillisecondsSinceEpoch(_messages!.last.timestamp);
-                                              String datetime = date.year.toString() + "/" + date.month.toString() + "/" + date.day.toString();
+                                              var _messagesCheck = snapshot.data!.messages?.isEmpty;
+                                              String? datetime;
+                                              if(_messagesCheck == false){
+                                                var date = DateTime.fromMillisecondsSinceEpoch(_messages!.last.timestamp);
+                                                datetime = date.year.toString() + "/" + date.month.toString() + "/" + date.day.toString();
+                                              }
                                               return Card(
                                                 margin: EdgeInsets.all(10),
                                                 color: Colors.white70,
@@ -165,7 +169,7 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                                   margin: EdgeInsets.all(5),
                                                   child: ListTile(
                                                     leading: CircleAvatar(
-                                                      child: Text('${_users[1][0]}'),
+                                                      child: Text('${_users?[1][0]}'),
                                                     ),
                                                     title: Text(
                                                       '${_users[1]}',
@@ -174,9 +178,10 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                                         fontSize: 20,
                                                       ),
                                                     ),
-                                                    subtitle: Text('${_messages?.last.text}'),
-                                                    trailing: Text('${datetime}'),
+                                                    subtitle: _messages!.length > 0 ? Text('${_messages?.last.text}') : Text(''),
+                                                    trailing: _messages!.length > 0 ? Text('${datetime}') : Text(''),
                                                     onTap: () {
+                                                      box.put('usernameDestination', _users[1]);
                                                       context.go('/chat/${listRooms[index]}');
                                                     },
                                                   ),

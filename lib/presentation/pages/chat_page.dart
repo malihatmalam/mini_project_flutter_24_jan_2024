@@ -19,8 +19,8 @@ class ChatPage extends StatefulWidget{
 
 class _ChatPageState extends State<ChatPage>{
   // Variable
-  // String? roomId = '8SFkk';
-
+  TextEditingController _messageController = TextEditingController();
+  bool _isButtonActive = false;
   late var box;
 
   String? _roomId;
@@ -31,16 +31,30 @@ class _ChatPageState extends State<ChatPage>{
     super.initState();
     // TODO: implement initState
     box = Hive.box('user');
+    _messageController.addListener(() {
+      setState(() {
+        _isButtonActive = _messageController.text.isNotEmpty;
+      });
+    });
   }
-
-  TextEditingController _messageController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    var _userDestination = box.get('usernameDestination', defaultValue: '');
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text(''),
+        title: Row(
+          children: [
+            CircleAvatar(
+              child: Text('${_userDestination[0]}'),
+            ),
+            SizedBox(
+              width: 10,
+            ),
+            Text('${_userDestination}'),
+          ],
+        ),
         leading: GestureDetector(
           onTap: () {
             return context.go('/');
@@ -52,54 +66,46 @@ class _ChatPageState extends State<ChatPage>{
         mainAxisSize: MainAxisSize.max,
         children: [
           Expanded(
-            flex: 1,
-            child: FutureBuilder<ChatRoom>(
+            child:
+            FutureBuilder<ChatRoom>(
               future: GetChat().execute(_roomId),
               builder: (context, snapshot) {
                 if(snapshot.hasData){
                   var _messages = snapshot.data!.messages;
                   return
-                    Column(
-                      children: <Widget>[
-                        Expanded(
-                          child: ListView(
-                            children: List.generate(_messages!.length, (index) {
-                              bool _part = _messages[index].username == box.get('username');
-                              var date = DateTime.fromMillisecondsSinceEpoch(_messages[index].timestamp);
-                              String datetime = date.hour.toString() + " : " + date.minute.toString() + "  " + date.day.toString() + "/" + date.month.toString() + "/" + date.year.toString()  ;
-                              return
-                                Bubble(
-                                  margin: BubbleEdges.only(top: 10),
-                                  nip: _part ? BubbleNip.rightTop : BubbleNip.leftTop,
-                                  alignment: _part ? Alignment.topRight : Alignment.topLeft,
-                                  color: _part ? Colors.lightBlueAccent : Colors.white70,
-                                  child: Expanded(
-                                    child: Align(
-                                      alignment: _part ? Alignment.topRight : Alignment.topLeft,
-                                      child: Column(
-                                        children: [
-                                          Text('${_messages[index].username}', style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                          )),
-                                          Text('${_messages[index].text}', textAlign: TextAlign.right),
-                                          Text('${datetime}', style: TextStyle(fontSize: 10)),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                );
-                              }
-                            ),
-                          ),
-                        ),
-                      ],
+                    ListView(
+                      children: List.generate(_messages!.length, (index) {
+                        bool _part = _messages[index].username == box.get('username');
+                        var date = DateTime.fromMillisecondsSinceEpoch(_messages[index].timestamp);
+                        String datetime = date.hour.toString() + " : " + date.minute.toString() + "  " + date.day.toString() + "/" + date.month.toString() + "/" + date.year.toString()  ;
+                        return
+                          Column(
+                            children: [
+                              Bubble(
+                                margin: BubbleEdges.only(left:10,top: 10, right: 10, bottom: 5),
+                                nip: _part ? BubbleNip.rightTop : BubbleNip.leftTop,
+                                alignment: _part ? Alignment.topRight : Alignment.topLeft,
+                                color: _part ? Colors.lightBlueAccent : Colors.white70,
+                                child: Column(
+                                  crossAxisAlignment: _part ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                  children: [
+                                    Text('${_messages[index].text}', textAlign: TextAlign.right),
+                                    Text('${datetime}', style: TextStyle(fontSize: 10), textAlign: TextAlign.right),
+                                  ],
+                                ),
+                              ),
+                            ],
+                          );
+                      }
+                      ),
                     );
                 }
                 else if(snapshot.hasError){
                   return Text('${snapshot.error}');
                 }else{
-                  return Text('Belum ada data');
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
                 }
               },
             ),
@@ -123,7 +129,7 @@ class _ChatPageState extends State<ChatPage>{
                   ),
                   IconButton(
                     icon: Icon(Icons.send),
-                    onPressed: () {
+                    onPressed: _isButtonActive ? () {
                       setState(() {
                         Chat message = Chat(
                             id: _roomId,
@@ -131,8 +137,9 @@ class _ChatPageState extends State<ChatPage>{
                             text: _messageController.text
                         );
                         SendChat().execute(message);
+                        _messageController.text = '';
                       });
-                    },
+                    } : null,
                   ),
                 ],
               ),

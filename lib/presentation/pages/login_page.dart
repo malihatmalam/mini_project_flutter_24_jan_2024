@@ -24,9 +24,11 @@ class _LoginPageState extends State<LoginPage> {
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Loginpage', style: TextStyle(
-            fontWeight: FontWeight.bold
-        ),),
+        title: Center(
+          child: Text('MiChat', style: TextStyle(
+              fontWeight: FontWeight.bold
+          ),),
+        ),
       ),
       body: Center(
         child: Container(
