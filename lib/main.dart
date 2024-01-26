@@ -3,10 +3,8 @@ import 'package:go_router/go_router.dart';
 
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:mini_project_flutter_24_jan_2024/domain/usecases/create_room.dart';
 import 'package:mini_project_flutter_24_jan_2024/presentation/pages/add_room_page.dart';
 import 'package:mini_project_flutter_24_jan_2024/presentation/pages/chat_page.dart';
-import 'package:mini_project_flutter_24_jan_2024/presentation/pages/home_page.dart';
 import 'package:mini_project_flutter_24_jan_2024/presentation/pages/home_page2.dart';
 import 'package:mini_project_flutter_24_jan_2024/presentation/pages/login_page.dart';
 
@@ -65,7 +63,7 @@ class MyApp extends StatelessWidget {
       routerConfig: _router,
       title: 'Mini Project Chat',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,

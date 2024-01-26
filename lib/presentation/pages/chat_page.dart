@@ -61,6 +61,12 @@ class _ChatPageState extends State<ChatPage>{
           },
           child: Icon(Icons.arrow_back),
         ),
+        actions: [
+          Container(
+           margin: EdgeInsets.all(10),
+           child: Icon(Icons.verified_user),
+          )
+        ],
       ),
       body: Column(
         mainAxisSize: MainAxisSize.max,
@@ -85,7 +91,8 @@ class _ChatPageState extends State<ChatPage>{
                                 margin: BubbleEdges.only(left:10,top: 10, right: 10, bottom: 5),
                                 nip: _part ? BubbleNip.rightTop : BubbleNip.leftTop,
                                 alignment: _part ? Alignment.topRight : Alignment.topLeft,
-                                color: _part ? Colors.lightBlueAccent : Colors.white70,
+                                color: _part ? Colors.lightGreenAccent : Colors.white,
+                                elevation: 3.0 ,
                                 child: Column(
                                   crossAxisAlignment: _part ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                                   children: [
@@ -127,19 +134,25 @@ class _ChatPageState extends State<ChatPage>{
                   SizedBox(
                     width: 10,
                   ),
-                  IconButton(
-                    icon: Icon(Icons.send),
-                    onPressed: _isButtonActive ? () {
-                      setState(() {
-                        Chat message = Chat(
-                            id: _roomId,
-                            username: box.get('username'),
-                            text: _messageController.text
-                        );
-                        SendChat().execute(message);
-                        _messageController.text = '';
-                      });
-                    } : null,
+                  CircleAvatar(
+                    backgroundColor: _isButtonActive ? Colors.lightGreen : Colors.white12,
+                    child: IconButton(
+                      icon: Container(
+                          child: Icon(Icons.send)
+                      ),
+                      color: Colors.white,
+                      onPressed: _isButtonActive ? () {
+                        setState(() {
+                          Chat message = Chat(
+                              id: _roomId,
+                              username: box.get('username'),
+                              text: _messageController.text
+                          );
+                          SendChat().execute(message);
+                          _messageController.text = '';
+                        });
+                      } : null,
+                    ),
                   ),
                 ],
               ),

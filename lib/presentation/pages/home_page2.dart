@@ -154,6 +154,7 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                               var _users = snapshot.data!.users;
                                               var _messages = snapshot.data!.messages;
                                               var _messagesCheck = snapshot.data!.messages?.isEmpty;
+                                              String _nameMessage = box.get('username') == _users[1] ? _users[0] : _users[1];
                                               String? datetime;
                                               if(_messagesCheck == false){
                                                 var date = DateTime.fromMillisecondsSinceEpoch(_messages!.last.timestamp);
@@ -168,10 +169,10 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                                   margin: EdgeInsets.all(5),
                                                   child: ListTile(
                                                     leading: CircleAvatar(
-                                                      child: Text('${_users[1][0]}'),
+                                                      child: Text('${_nameMessage[0]}'),
                                                     ),
                                                     title: Text(
-                                                      '${_users[1]}',
+                                                      '${_nameMessage}',
                                                       style: TextStyle(
                                                         fontWeight: FontWeight.bold,
                                                         fontSize: 20,
@@ -180,7 +181,7 @@ class _HomePageRevisiState extends State<HomePageRevisi> {
                                                     subtitle: _messages!.length > 0 ? Text('${_messages.last.text}', maxLines: 1, overflow: TextOverflow.ellipsis,) : Text(''),
                                                     trailing: _messages.length > 0 ? Text('${datetime}') : Text(''),
                                                     onTap: () {
-                                                      box.put('usernameDestination', _users[1]);
+                                                      box.put('usernameDestination', _nameMessage);
                                                       context.go('/chat/${listRooms[index]}');
                                                     },
                                                   ),
